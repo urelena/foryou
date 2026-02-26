@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> for debest person! </title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #56a7ed 0%, #82b8f3 50%, #60a6e2 100%);
+      font-family: 'Fira Sans Condensed', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* ================= LOADING (ONLY AFTER GAME) ================= */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #56a7ed 0%, #82b8f3 50%, #60a6e2 100%);
+      display: none;            /* penting: defaultnya mati */
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      flex-direction: column;
+      transition: opacity 0.6s ease;
+      opacity: 1;
+    }
+
+    .loader-box {
+      text-align: center;
+      color: white;
+      padding: 20px 22px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      width: min(360px, 86vw);
+    }
+
+    .loader-box h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.10);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 14px;
+      background: rgba(255,255,255,0.30);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px auto 14px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #ffffff;
+      border-radius: 20px;
+      transition: width 0.12s ease;
+    }
+
+    #progress-text {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    #progress-sub {
+      margin: 8px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+      letter-spacing: 0.4px;
+    }
+
+    /* ================= CONFETTI ================= */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #ff1744;
+      animation: fall linear forwards;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); }
+    }
+
+    /* ================= CARTOONS ================= */
+    .cartoon-left {
+      position: fixed;
+      left: 99px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      height: auto;
+      z-index: 100;
+      animation: floatLeft 3s ease-in-out infinite;
+      pointer-events: none;
+
+      display: none; /* ✅ awalnya ga ada */
+    }
+
+    .cartoon-right {
+      position: fixed;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 500px;
+      height: auto;
+      z-index: 100;
+      animation: floatRight 3s ease-in-out infinite;
+      pointer-events: none;
+
+      display: none; /* ✅ awalnya ga ada */
+    }
+
+    @keyframes floatLeft {
+      0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+      50% { transform: translateY(-60%) rotate(5deg); }
+    }
+
+    @keyframes floatRight {
+      0%, 100% { transform: translateY(-60%) rotate(5deg); }
+      50% { transform: translateY(-50%) rotate(-5deg); }
+    }
+
+    @keyframes pop {
+  0% { transform: scale(0.95); }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+.message-box { animation: pop 0.25s ease; } 
+
+    /* ================= CARD ================= */
+    .card {
+      background-color: rgb(253, 253, 253);
+      background-image: radial-gradient(#0c9ff5 1px, transparent 1px);
+      background-size: 20px 20px;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(13, 45, 206, 0.15);
+      text-align: center;
+      max-width: 450px;
+      width: 90%;
+      border-top: 8px solid #ff1744;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .welcome-section { display: block; }
+
+    .welcome-title {
+      font-family: 'Spectral', serif;
+      font-size: 45px;
+      font-weight: bold;
+      color: #ff0000;
+      margin-bottom: 10px;
+
+  
+      text-transform: none;
+
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .proud-text {
+      font-size: 30px;
+      font-weight: bold;
+      color: #000000;
+      margin: 10px 0;
+    }
+
+    .name-text {
+      font-size: 30px;
+      font-family: 'Fira Sans Condensed', sans-serif;
+      font-weight: bold;
+      color: #101010;
+      margin: 20px 0;
+      letter-spacing: 2px;
+      text-transform: none;
+    }
+
+    .decoration {
+      font-size: 40px;
+      margin: 5px 0;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ================= GAME ================= */
+    .game-section { display: none; }
+
+    .game-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 15px;
+    }
+
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      max-width: 250px;
+      margin: 0 auto 15px;
+    }
+
+    .cell {
+      width: 70px;
+      height: 70px;
+      background: #f0f8ff;
+      border: 2px solid #90caf9;
+      border-radius: 10px;
+      font-size: 36px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s;
+      user-select: none;
+    }
+
+    .cell:hover { background: #e3f2fd; transform: scale(1.05); }
+
+    .cell.x { color: #ff1744; }
+    .cell.o { color: #2196f3; }
+
+    .game-status {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+      min-height: 27px;
+    }
+
+    .game-status.win { color: #4caf50; }
+    .game-status.lose { color: #ff1744; }
+    .game-status.draw { color: #ff9800; }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      background: linear-gradient(45deg, #ff1744, #ff5252);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      display: none;
+    }
+
+    .next-btn {
+      background: linear-gradient(45deg, #4caf50, #8bc34a);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      display: none;
+    }
+
+    .content {
+      display: none;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .photo-frame {
+      width: 350px;
+      height: 350px;
+      border-radius: 0;
+      object-fit: cover;
+      border: 4px solid #90caf9;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .reveal-btn {
+      background: linear-gradient(45deg, #ff1744, #ff5252);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(255, 23, 68, 0.3);
+    }
+
+    .message-box {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      background: #f8fbff;
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid #e3f2fd;
+    }
+
+    .message-box p {
+      color: #333;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff1744;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 10000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Love rain */
+    .love {
+      position: absolute;
+      top: -20px;
+      pointer-events: none;
+      animation: fallLove 3s linear forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes fallLove {
+      to { transform: translateY(520px); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .cartoon-left, .cartoon-right { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- LOADING SCREEN (ONLY FOR AFTER GAME) -->
+  <div id="loading-screen">
+    <div class="loader-box">
+      <h2 id="loader-title">Opening.....</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p id="progress-text">0%</p>
+      <p id="progress-sub">sebentarr ya kel 😙</p>
+    </div>
+  </div>
+
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+  <audio id="bgMusic" loop>
+    <source src="MIKEL.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sfxTring" preload="auto">
+  <source src="tring.mp3" type="audio/mpeg">
+</audio>
+
+  <img src="kartub (3).png" alt="Kartun Kiri" class="cartoon-left">
+  <img src="katrus.png" alt="Kartun Kanan" class="cartoon-right">
+
+  <div class="card">
+    <div id="welcome-section" class="welcome-section">
+      <h1 class="welcome-title" id="typing1"></h1>
+      <p class="proud-text" id="typing2"></p>
+      <p class="name-text" id="typing3"></p>
+      <script>
+  function typeEffect(el, text, speed, cb) {
+    let i = 0;
+    el.textContent = "";
+
+    (function typing() {
+      if (i < text.length) {
+        el.textContent += text.charAt(i++);
+        setTimeout(typing, speed);
+      } else if (cb) cb();
+    })();
+  }
+
+  // jalankan setelah elemen ada (karena script ditaruh setelah elemennya)
+  const t1 = document.getElementById("typing1");
+  const t2 = document.getElementById("typing2");
+  const t3 = document.getElementById("typing3");
+
+  // kalau ini null, berarti ID kamu gak kebaca / typo
+  console.log("typing elements:", t1, t2, t3);
+
+  typeEffect(t1, "Hi, Michael!", 80, () => {
+    typeEffect(t2, "cieee udah selesaii sidanggg", 60, () => {
+      typeEffect(t3, "welcomeee S.M.🎓", 80);
+    });
+  });
+</script>
+
+      <button class="reveal-btn" onclick="startGame()" style="margin-top: 20px;">pencet sini kel</button>
+    </div>
+
+    <div id="game-section" class="game-section">
+      <h2 class="game-title">ayoo main ini dulu bentar</h2>
+      <p class="game-status" id="status"> Giliran: Michael (X)</p>
+
+      <div class="game-board" id="board">
+        <div class="cell" data-index="0" onclick="makeMove(0)"></div>
+        <div class="cell" data-index="1" onclick="makeMove(1)"></div>
+        <div class="cell" data-index="2" onclick="makeMove(2)"></div>
+        <div class="cell" data-index="3" onclick="makeMove(3)"></div>
+        <div class="cell" data-index="4" onclick="makeMove(4)"></div>
+        <div class="cell" data-index="5" onclick="makeMove(5)"></div>
+        <div class="cell" data-index="6" onclick="makeMove(6)"></div>
+        <div class="cell" data-index="7" onclick="makeMove(7)"></div>
+        <div class="cell" data-index="8" onclick="makeMove(8)"></div>
+      </div>
+
+      <div class="btn-group">
+        <button class="restart-btn" id="restartBtn" onclick="restartGame()">🔄 Main Lagi</button>
+        <button class="next-btn" id="nextBtn" onclick="showContent()">sini kesinii kalau udah menang</button>
+      </div>
+    </div>
+
+    <div id="main-content" class="content">
+      <h1> Congratulations! <br> Unofficially <br> Michael Ezra S.M. </h1>
+      <img src="phot.png" alt="Foto Michael" class="photo-frame">
+
+      <button class="reveal-btn" onclick="bukaUcapan()">💌</button>
+
+      <div id="ucapan" class="message-box">
+        <p><strong>helaww mikeel,</strong></p>
+        <p>
+          eyy congrats and happyyy for youuu, cieee jadi calon sarjana manajemen ^___^ akuu jujurrr ikutan senengg banget plslsl akhirnyaa hari ini datengg jugaa, akuu bangga bangeet sama kamuuu kelll, reallyy! youu are like a sun, moon and star that so bright todayyy☀️🌙⭐️ ​makasih banyakkk yaa mikeel kamuu udahh berjuang sejauh ini dan sampee saat inii. setelahh puyengnya kuliaaah ituu kamu berhasill tuntasin semuanyaa kaya kamuu ngerjain skripsi, revisi yang bolak-balik kayak setrikaan ituu wkwkkwkw teruss kamu sampe begadang buat ngurusinn banyak hal ini itu di kampusss yang pastinyaa capeeee banget tapi liat deh sekarang, semua usahaa kamu kebayarr lunas hari ini lohh soo proud of youu :D kamuu kerenn kerenn banget sumpaah bisaa ngelewatinn masaaa masa sulit ituu walauu kadang kaya mau nyerah, tapii kamu bisaaa dan ngelewatinnnn semuanya. kamuu berhasil di posisi inii berkat usaha kamuu sendiri... makasihh yaa mikeell udahh selaluu bertahan, makasihh udah tetep berusahaa meskipun kadang dunianyaa lagi capee capenyaa, kamu keren bangett asli. semuaa ilmu yang kamu dapeeet selamaa inii jadiinn hal yang baikk samaaa bergunaa untuk segala hal, jangann lupa di praktekin yaaw kamuu pokoknya udah kereen bangett woaaw 👀✨ tebak brp kali aku blg km keren kell hehhehe.  i’m beyond proud of youu and all your achievementss mikeeelll. jalanii hari baru kamuu semangat teruss yaa setelah graduate nantiii, akuu bakal selaluu dukung kamu di setiap langkah kedepannyaaa okayy, i'll always heree for youu <3 i adoree youu soo soo soo soo much and once again, see ya Michael Ezra S.M. enjoy your day yaaa kelll 💖🌄  
+          ohhh iyaaa mianhee kalau ada yg kurang & bunganya beda sama yg di asli, jariku tremor dikit buatnya :p 
+        </3></p>
+        <p style="text-align: right; color: #ff1744;">- ELENA</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let musicPlaying = false;
+    let confettiStarted = false;
+    let playerWon = false;
+
+    const winningConditions = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+
+    function startGame() {
+      document.getElementById('welcome-section').style.display = 'none';
+      document.getElementById('game-section').style.display = 'block';
+      playMusic();
+    }
+
+    function makeMove(index) {
+      if (board[index] !== '' || !gameActive) return;
+
+      board[index] = currentPlayer;
+      const cell = document.querySelector(`.cell[data-index="${index}"]`);
+      cell.textContent = currentPlayer;
+      cell.classList.add(currentPlayer.toLowerCase());
+
+      checkResult();
+    }
+
+    function checkResult() {
+      let winner = null;
+
+      for (let i = 0; i < winningConditions.length; i++) {
+        const [a, b, c] = winningConditions[i];
+        if (board[a] === '' || board[b] === '' || board[c] === '') continue;
+        if (board[a] === board[b] && board[b] === board[c]) {
+          winner = board[a];
+          break;
+        }
+      }
+
+      if (winner === 'X') {
+        document.getElementById('status').textContent = 'Asikk menang';
+        document.getElementById('status').className = 'game-status win';
+        gameActive = false;
+        playerWon = true;
+        document.getElementById('nextBtn').style.display = 'inline-block';
+        document.getElementById('restartBtn').style.display = 'inline-block';
+        return;
+      }
+
+      if (winner === 'O') {
+        document.getElementById('status').textContent = 'HAHAHAHHA KALAH';
+        document.getElementById('status').className = 'game-status lose';
+        gameActive = false;
+        playerWon = false;
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('restartBtn').style.display = 'inline-block';
+        return;
+      }
+
+      if (!board.includes('')) {
+        document.getElementById('status').textContent = 'Serii kel, ulang';
+        document.getElementById('status').className = 'game-status draw';
+        gameActive = false;
+        playerWon = false;
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('restartBtn').style.display = 'inline-block';
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      document.getElementById('status').textContent = `Giliran: ${currentPlayer === 'X' ? 'Michael (X)' : 'Elena (O)'}`;
+
+      if (currentPlayer === 'O') {
+        setTimeout(computerMove, 500);
+      }
+    }
+
+    function computerMove() {
+      let availableMoves = board
+        .map((val, idx) => val === '' ? idx : null)
+        .filter(val => val !== null);
+
+      if (availableMoves.length === 0) return;
+
+      let randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      board[randomMove] = 'O';
+
+      const cell = document.querySelector(`.cell[data-index="${randomMove}"]`);
+      cell.textContent = 'O';
+      cell.classList.add('o');
+
+      checkResult();
+      document.getElementById('restartBtn').style.display = 'inline-block';
+    }
+
+    function startProgressAfterGame(callback) {
+      const loading = document.getElementById("loading-screen");
+      const bar = document.getElementById("progress-bar");
+      const text = document.getElementById("progress-text");
+      const title = document.getElementById("loader-title");
+
+      title.textContent = "Opening....";
+      bar.style.width = "0%";
+      text.textContent = "0%";
+
+      loading.style.display = "flex";
+      loading.style.opacity = "1";
+
+      let percent = 0;
+      const duration = 1300;
+      const stepTime = Math.max(10, Math.floor(duration / 100));
+
+      const interval = setInterval(() => {
+        percent++;
+        bar.style.width = percent + "%";
+        text.textContent = percent + "%";
+
+        if (percent >= 100) {
+          clearInterval(interval);
+
+          setTimeout(() => {
+            loading.style.opacity = "0";
+            setTimeout(() => {
+              loading.style.display = "none";
+              callback?.();
+            }, 600);
+          }, 250);
+        }
+      }, stepTime);
+    }
+
+
+    function showContent() {
+      if (!playerWon) return;
+
+      startProgressAfterGame(() => {
+        document.getElementById('game-section').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+
+        // ✅ kartun baru muncul setelah game selesai
+        document.querySelector('.cartoon-left').style.display = 'block';
+        document.querySelector('.cartoon-right').style.display = 'block';
+
+        if (!confettiStarted) {
+          startConfetti();
+          confettiStarted = true;
+        }
+      });
+    }
+
+    function restartGame() {
+      board = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      gameActive = true;
+      playerWon = false;
+
+      document.getElementById('status').textContent = 'Giliran: Michael (X)';
+      document.getElementById('status').className = 'game-status';
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('restartBtn').style.display = 'none';
+
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.textContent = '';
+        cell.classList.remove('x', 'o');
+      });
+    }
+
+    function bukaUcapan() {
+  var x = document.getElementById("ucapan");
+
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+
+    // 🔔 SFX TRING
+    const tring = document.getElementById("sfxTring");
+    tring.currentTime = 0;
+    tring.play().catch(()=>{});
+
+    startLoveRain();
+  }
+}
+
+    function startLoveRain() {
+      const card = document.querySelector(".card");
+      for (let i = 0; i < 25; i++) createLove(card);
+
+      const interval = setInterval(() => createLove(card), 250);
+      setTimeout(() => clearInterval(interval), 3500);
+    }
+
+    function createLove(card) {
+      const love = document.createElement("div");
+      love.className = "love";
+      love.innerHTML = "💖";
+      love.style.left = Math.random() * card.offsetWidth + "px";
+      love.style.fontSize = (Math.random() * 18 + 14) + "px";
+      card.appendChild(love);
+      setTimeout(() => love.remove(), 3000);
+    }
+
+    function playMusic() {
+      var music = document.getElementById("bgMusic");
+      music.play().then(() => {
+        musicPlaying = true;
+        document.getElementById("musicBtn").innerHTML = "🎵";
+      }).catch(() => {
+        musicPlaying = false;
+        document.getElementById("musicBtn").innerHTML = "🔇";
+      });
+    }
+
+    function toggleMusic() {
+      var music = document.getElementById("bgMusic");
+      if (musicPlaying) {
+        music.pause();
+        document.getElementById("musicBtn").innerHTML = "🔇";
+      } else {
+        music.play().then(() => {
+          document.getElementById("musicBtn").innerHTML = "🎵";
+        }).catch(() => {});
+      }
+      musicPlaying = !musicPlaying;
+    }
+
+    function startConfetti() {
+      var colors = ['#ff1744', '#90caf9', '#64b5f6', '#ff5252', '#2196f3', '#FFD700'];
+
+      for (var i = 0; i < 50; i++) createConfetti(colors);
+
+      setInterval(function() {
+        createConfetti(colors);
+      }, 500);
+    }
+
+    function createConfetti(colors) {
+      var confetti = document.createElement("div");
+      confetti.className = "confetti";
+
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.top = "-10px";
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+      var size = Math.random() * 10 + 5;
+      confetti.style.width = size + "px";
+      confetti.style.height = size + "px";
+      confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+
+      document.body.appendChild(confetti);
+
+      setTimeout(function() {
+        confetti.remove();
+      }, 5000);
+
+  
+    }
+  </script>
+</body>
+</html>
