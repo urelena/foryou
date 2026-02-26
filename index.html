@@ -22,12 +22,11 @@
       overflow-x: hidden;
     }
 
-    /* ================= LOADING (ONLY AFTER GAME) ================= */
     #loading-screen {
       position: fixed;
       inset: 0;
       background: linear-gradient(135deg, #56a7ed 0%, #82b8f3 50%, #60a6e2 100%);
-      display: none;            /* penting: defaultnya mati */
+      display: none;         
       justify-content: center;
       align-items: center;
       z-index: 20000;
@@ -84,7 +83,7 @@
       letter-spacing: 0.4px;
     }
 
-    /* ================= CONFETTI ================= */
+  
     .confetti {
       position: fixed;
       width: 10px;
@@ -99,7 +98,7 @@
       to { transform: translateY(100vh) rotate(720deg); }
     }
 
-    /* ================= CARTOONS ================= */
+  
     .cartoon-left {
       position: fixed;
       left: 99px;
@@ -111,7 +110,7 @@
       animation: floatLeft 3s ease-in-out infinite;
       pointer-events: none;
 
-      display: none; /* ✅ awalnya ga ada */
+      display: none; 
     }
 
     .cartoon-right {
@@ -125,7 +124,7 @@
       animation: floatRight 3s ease-in-out infinite;
       pointer-events: none;
 
-      display: none; /* ✅ awalnya ga ada */
+      display: none; 
     }
 
     @keyframes floatLeft {
@@ -145,7 +144,7 @@
 }
 .message-box { animation: pop 0.25s ease; } 
 
-    /* ================= CARD ================= */
+    
     .card {
       background-color: rgb(253, 253, 253);
       background-image: radial-gradient(#0c9ff5 1px, transparent 1px);
@@ -210,7 +209,7 @@
       50% { transform: translateY(-10px); }
     }
 
-    /* ================= GAME ================= */
+    
     .game-section { display: none; }
 
     .game-title {
@@ -378,7 +377,6 @@
 </head>
 
 <body>
-  <!-- LOADING SCREEN (ONLY FOR AFTER GAME) -->
   <div id="loading-screen">
     <div class="loader-box">
       <h2 id="loader-title">Opening.....</h2>
@@ -420,12 +418,11 @@
     })();
   }
 
-  // jalankan setelah elemen ada (karena script ditaruh setelah elemennya)
+  
   const t1 = document.getElementById("typing1");
   const t2 = document.getElementById("typing2");
   const t3 = document.getElementById("typing3");
 
-  // kalau ini null, berarti ID kamu gak kebaca / typo
   console.log("typing elements:", t1, t2, t3);
 
   typeEffect(t1, "Hi, Michael!", 80, () => {
@@ -621,7 +618,6 @@
         document.getElementById('game-section').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
 
-        // ✅ kartun baru muncul setelah game selesai
         document.querySelector('.cartoon-left').style.display = 'block';
         document.querySelector('.cartoon-right').style.display = 'block';
 
@@ -741,4 +737,5 @@
     }
   </script>
 </body>
+
 </html>
